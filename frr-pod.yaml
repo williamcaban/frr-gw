@@ -3,7 +3,7 @@ kind: Pod
 metadata:
   name: ext-gw
   # annotations:
-  #   k8s.v1.cni.cncf.io/networks: '[{ "name": "ext-gw-net", "ips": [ "192.168.216.50/24" ]}]'
+  #   k8s.v1.cni.cncf.io/networks: '[{ "name": "ext-gw-net", "ips": [ "198.18.111.99/24" ]}]'
   #   k8s.ovn.org/routing-namespaces: ”blue,foo”
   #   k8s.ovn.org/bfd-enabled: ""
   #   k8s.ovn.org/routing-network: ext-gw-net
@@ -16,11 +16,23 @@ spec:
     #   - sleep
     #   - infinity
     command: ["/bin/sh","-c"]
-    # args: ["/usr/lib/frr/frrinit.sh start && tail -f /var/log/frr/frr.log"]
     args: ["/usr/libexec/frr/frrinit.sh start && tail -f /tmp/frr.log "]
     ports:
-    - containerPort: 3784
+    - name: bfd
+      containerPort: 3784
       protocol: UDP
+    - name: bgp
+      containerPort: 179
+      protocol: TCP
+    - name: rip
+      containerPort: 520
+      protocol: UDP
+    - name: ripng
+      containerPort: 521
+      protocol: UDP
+    - name: stats
+      containerPort: 9000
+      protocol: TCP
     securityContext:
       privileged: true
     volumeMounts:
