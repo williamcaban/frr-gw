@@ -1,0 +1,13 @@
+---
+# Enable Multiple External Gateways functionality
+# NOTE: This ConfigMap is ONLY required forOCP 4.9.x.
+# This configuration is enabled by default for OCP 4.10
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: gateway-mode-config
+    namespace: openshift-network-operator
+data:
+    disable-snat-multiple-gws: "true"
+    mode: "shared"
+immutable: true

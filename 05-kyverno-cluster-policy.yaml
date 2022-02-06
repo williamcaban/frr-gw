@@ -1,0 +1,51 @@
+---
+# Prevent the following type of annotations
+#   k8s.ovn.org/routing-namespaces: ”blue,foo”
+#   k8s.ovn.org/bfd-enabled: ""
+#   k8s.ovn.org/routing-network: ext-gw-net
+##
+# Prerequisite: Install Kyverno
+# oc create -f https://raw.githubusercontent.com/kyverno/kyverno/main/config/release/install.yaml
+##
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-ext-gw-annotations
+  annotations:
+    policies.kyverno.io/title: Restrict External GW Annotations
+    policies.kyverno.io/category: OVN Security
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/subject: Pod, Annotation
+    policies.kyverno.io/description: >-
+      Restrict Multiple External Gateway annotations in Pods outside the
+      preauthorized list of namespaces. This policy prevent rogue Pods from hijacking
+      traffic in a cluster with the Multiple External Gateway functionality enabled.     
+    pod-policies.kyverno.io/autogen-controllers: None
+spec:
+  validationFailureAction: enforce
+  background: true
+  rules:
+  - name: block-ext-gw-annotations
+    match:
+      resources:
+        kinds:
+        - Deployment
+        - CronJob
+        - Job
+        - StatefulSet
+        - DaemonSet
+        - Pod
+        - Namespace
+    exclude:
+      resources:
+        namespaces:
+          - "openshift*"
+          - frr
+    validate:
+      message: Cannot use Multiple External GW annotation in this Namespace.
+      pattern:
+        metadata:
+          =(annotations):
+            X(k8s.ovn.org/routing-namespaces): "*?"
+            X(k8s.ovn.org/bfd-enabled): "*?"
+            X(k8s.ovn.org/routing-network): "*?"
