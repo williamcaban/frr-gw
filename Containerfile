@@ -13,7 +13,7 @@ RUN dnf install --setopt=tsflags=nodocs -y \
     && dnf clean all \
     && rm -fr /var/cache/dnf
 
-LABEL   io.k8s.display-name="FRR Router" \
+LABEL io.k8s.display-name="FRR Router" \
     io.k8s.description="FRR Container with troubleshooting tools" \
     io.openshift.tags="frr,iproute,tcpdump"
 
