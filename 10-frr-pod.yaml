@@ -45,6 +45,7 @@ spec:
     - name: stats
       containerPort: 9000
       protocol: TCP
+    # ServiceAccount requires "privileged" SCC
     securityContext:
       privileged: true
     volumeMounts:
