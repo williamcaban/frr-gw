@@ -2,8 +2,20 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: ext-gw
-  # annotations:
-  #   k8s.v1.cni.cncf.io/networks: '[{ "name": "ext-gw-net", "ips": [ "198.18.111.99/24" ]}]'
+  annotations:
+    k8s.v1.cni.cncf.io/networks: '[
+        {
+          "name": "external-net", 
+          "interface": "external0", 
+          "ips": [ "198.18.112.99/24" ], 
+          "default-route": [ "198.18.112.254" ]
+        },
+        {
+          "name": "internal-net",
+          "interface": "internal0", 
+          "ips": [ "198.18.111.99/24" ]
+        }
+      ]'
   #   k8s.ovn.org/routing-namespaces: ”blue,foo”
   #   k8s.ovn.org/bfd-enabled: ""
   #   k8s.ovn.org/routing-network: ext-gw-net

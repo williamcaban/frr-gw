@@ -5,7 +5,7 @@ metadata:
   name: frr-configs
 data:
   daemons: |
-    bgpd=no
+    bgpd=yes
     ospfd=no
     ospf6d=no
     ripd=no
@@ -40,35 +40,40 @@ data:
     bfdd_options="   -A 127.0.0.1"
     fabricd_options="-A 127.0.0.1"
     vrrpd_options="  -A 127.0.0.1"
+  vtysh.conf: |
+    service integrated-vtysh-config
   frr.conf: |
+    hostname vrouter
+    service integrated-vtysh-config
     password frr
     enable password frr
-    bfd
-     peer 192.168.216.14 interface net1
-       no shutdown
-       debug bfd network
-       debug bfd peer
-       debug bfd zebra
-     !
+    !
+    debug bfd peer
+    debug bfd zebra
+    debug bfd network
     !
     bfd
-     peer 192.168.216.15 interface net1
+     peer 198.18.111.15
        no shutdown
-       debug bfd network
-       debug bfd peer
-       debug bfd zebra
      !
+     peer 198.18.111.16
+       no shutdown
+     !
+     peer 198.18.112.254
+       no shutdown
+     !
+    !
+    router bgp 65500
+      bgp router-id 198.18.112.99
+      no bgp ebgp-requires-policy
+      neighbor 198.18.112.254 remote-as 65535
+      neighbor 198.18.112.254 bfd
+      neighbor 198.18.112.254 graceful-restart
+      !
+      address-family ipv4 unicast
+        redistribute connected metric 100
+      exit-address-family
     !
     # log file /var/log/frr/frr.log debugging
     log file /tmp/frr.log debugging
     #log stdout debugging
-  bfdd.conf: ""
-  bgpd.conf: ""
-  ospf6d.conf: ""
-  ospfd.conf: ""
-  pbrd.conf: ""
-  staticd.conf: ""
-  vtysh.conf: |
-    no service integrated-vtysh-config
-  zebra.conf: |
-    hostname vrouter

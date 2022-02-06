@@ -1,0 +1,10 @@
+---
+kind: NMState
+apiVersion: nmstate.io/v1beta1
+metadata:
+  name: nmstate
+spec:
+  nodeSelector:
+    beta.kubernetes.io/arch: amd64
+
+# oc get nns

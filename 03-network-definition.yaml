@@ -1,0 +1,61 @@
+---
+apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
+metadata:
+  name: external-net 
+spec:
+  config: |-
+    {
+      "cniVersion": "0.3.1",
+      "name": "external-net",
+      "plugins": [
+        {
+          "type": "macvlan",
+          "master": "enp8s0",
+          "mode": "bridge",
+          "ipam": {
+            "type": "static"
+          }
+        },
+        {
+          "capabilities": {
+            "mac": true,
+            "ips": true
+          },
+          "type": "tuning"
+        }
+      ]
+    }
+---
+apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
+metadata:
+  name: internal-net 
+spec:
+  config: |-
+    {
+      "cniVersion": "0.3.1",
+      "name": "internal-net",
+      "plugins": [
+        {
+          "type": "macvlan",
+          "master": "enp9s0",
+          "mode": "bridge",
+          "ipam": {
+            "type": "static"
+          }
+        },
+        {
+          "capabilities": {
+            "mac": true,
+            "ips": true
+          },
+          "type": "tuning"
+        }
+      ]
+    }
+
+# oc get net-attach-def
+# NAME           AGE
+# external-net   6m21s
+# internal-net   6m21s
