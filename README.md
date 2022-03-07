@@ -23,38 +23,39 @@ NOTE: At this moment Kyverno is an upstream project without a validated or certi
     ```bash
     oc create -f https://raw.githubusercontent.com/kyverno/kyverno/main/config/release/install.yaml
     ```
-- Install NMState Operator (pre-requisite)
+- (pre-requisite) Install NMState Operator `01-nmstate-install.yaml`
 - Update the manifests to match your environment, then apply them in the following order
-```bash
-# Configure NMState Operator
-# Note: update to match your environment
-oc apply -f 01-nmstate-nodeselector.yaml
 
-# Configure NMState for external and internal NICs
-# Note: update to match your environment
-oc apply -f 02-nmstate-external-net.yaml
-oc apply -f 02-nmstate-internal-net.yaml
+    ```bash
+    # Configure NMState Operator
+    # Note: update to match your environment
+    oc apply -f 01-nmstate-nodeselector.yaml
 
-# Create "frr" namespace and multus network definitions
-# Note: update to match your environment
-oc apply -f 03-create-namespace.yaml
-oc apply -f 03-network-definition.yaml
+    # Configure NMState for external and internal NICs
+    # Note: update to match your environment
+    oc apply -f 02-nmstate-external-net.yaml
+    oc apply -f 02-nmstate-internal-net.yaml
 
-# Configure Kyverno security policy
-# Note: update to match your environment
-oc apply -f 05-kyverno-cluster-policy.yaml
+    # Create "frr" namespace and multus network definitions
+    # Note: update to match your environment
+    oc apply -f 03-create-namespace.yaml
+    oc apply -f 03-network-definition.yaml
 
-# Create example Namespaces and Pods
-# Note: update to match your environment
-oc apply -f 07-dummy-ns-foo-bar.yml
-oc apply -f 07-dummy-pod-bar.yaml
-oc apply -f 07-dummy-pod-foo.yaml
+    # Configure Kyverno security policy
+    # Note: update to match your environment
+    oc apply -f 05-kyverno-cluster-policy.yaml
 
-# Create ConfigMap and Pod for external gateway
-# Note: update to match your environment
-oc apply -f 10-frr-configmap.yaml
-oc apply -f 10-frr-pod.yaml
-```
+    # Create example Namespaces and Pods
+    # Note: update to match your environment
+    oc apply -f 07-dummy-ns-foo-bar.yml
+    oc apply -f 07-dummy-pod-bar.yaml
+    oc apply -f 07-dummy-pod-foo.yaml
+
+    # Create ConfigMap and Pod for external gateway
+    # Note: update to match your environment
+    oc apply -f 10-frr-configmap.yaml
+    oc apply -f 10-frr-pod.yaml
+    ```
 
 ## TIPs
 
