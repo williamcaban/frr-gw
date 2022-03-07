@@ -60,13 +60,14 @@ NOTE: At this moment Kyverno is an upstream project without a validated or certi
 ## TIPs
 
 - Generating the static routes entries for nodes subnets
-```bash
-oc get nodes -o jsonpath='{range .items[*].metadata.annotations}{.k8s\.ovn\.org\/node\-subnets}{.k8s\.ovn\.org\/node\-primary\-ifaddr}{"\n"}{end}' | awk -F'["/]' '{print "ip route " $4"/"$5 " " $9}'
-ip route 10.128.2.0/23 198.18.111.12
-ip route 10.129.0.0/23 198.18.111.13
-ip route 10.128.0.0/23 198.18.111.14
-ip route 10.130.0.0/23 198.18.111.15
-ip route 10.131.0.0/23 198.18.111.16
-```
+
+    ```bash
+    oc get nodes -o jsonpath='{range .items[*].metadata.annotations}{.k8s\.ovn\.org\/node\-subnets}{.k8s\.ovn\.org\/node\-primary\-ifaddr}{"\n"}{end}' | awk -F'["/]' '{print "ip route " $4"/"$5 " " $9}'
+    ip route 10.128.2.0/23 198.18.111.12
+    ip route 10.129.0.0/23 198.18.111.13
+    ip route 10.128.0.0/23 198.18.111.14
+    ip route 10.130.0.0/23 198.18.111.15
+    ip route 10.131.0.0/23 198.18.111.16
+    ```
 
 - A reference configuration for an upstream router is `99-frr-upstream-router.conf`
