@@ -1,0 +1,26 @@
+---
+apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: enp2s0-enable-noip
+spec:
+  nodeSelector:
+    # ovn.ext-gw.example.org/frr-pod: ""
+    kubernetes.io/hostname: w1
+  desiredState:
+    interfaces:
+    - name: enp2s0
+      type: ethernet
+      state: up
+      ipv4:
+        dhcp: false
+        enabled: false
+
+# oc get nncp
+# oc label node w1 ovn.ext-gw.example.org/frr-pod=""
+
+# vlan 12 (ext-net), vlan 11 (int-net)
+#enp2s0: vlan12
+# nmcli connection add con-name enp2s0 ifname enp2s0 type ethernet ipv4.method disabled 
+#enp3s0: vlan13/11
+# nmcli connection add con-name enp3s0 ifname enp3s0 type ethernet ipv4.method disabled 

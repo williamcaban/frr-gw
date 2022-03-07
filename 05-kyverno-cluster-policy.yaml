@@ -38,8 +38,8 @@ spec:
         - Namespace
     exclude:
       resources:
+        # namespaces which can run an external gateway Pods
         namespaces:
-          - "openshift*"
           - frr
     validate:
       message: Cannot use Multiple External GW annotation in this Namespace.

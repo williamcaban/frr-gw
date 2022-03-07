@@ -13,6 +13,9 @@ RUN dnf install --setopt=tsflags=nodocs -y \
     && dnf clean all \
     && rm -fr /var/cache/dnf
 
+# Install latest OCP/K8s client
+RUN curl https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz | tar -xzf - -C /usr/local/bin
+
 LABEL io.k8s.display-name="FRR Router" \
     io.k8s.description="FRR Container with troubleshooting tools" \
     io.openshift.tags="frr,iproute,tcpdump"

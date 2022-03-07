@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dummy
+  namespace: bar
+spec:
+  # hostNetwork: true
+  # serviceAccountName: dummy-sa
+  # serviceAccount: dummy-sa
+  containers:
+  - name: dummy
+    image: quay.io/wcaban/frr
+    command:
+      - sleep
+      - infinity
+    # ServiceAccount requires "privileged" SCC
+    # if planning on doing packet capture
+    # securityContext:
+    #   privileged: true
+  # nodeSelector:
+  #   kubernetes.io/hostname: w0

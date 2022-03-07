@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: ext-gw
-  # namespace: frr
+  namespace: frr
   annotations:
     k8s.v1.cni.cncf.io/networks: '[
         {
@@ -17,11 +17,29 @@ metadata:
           "ips": [ "198.18.111.99/24" ]
         }
       ]'
-    # k8s.ovn.org/routing-namespaces: ”blue,foo”
-    # k8s.ovn.org/bfd-enabled: ""
-    # k8s.ovn.org/routing-network: "internal-net"
+    k8s.v1.cni.cncf.io/network-status: |-
+      [{
+          "name": "frr/external-net",
+          "interface": "external",
+          "ips": [
+              "198.18.112.99"
+          ],
+          "dns": {}
+      },{
+          "name": "frr/internal-net",
+          "interface": "internal",
+          "ips": [
+              "198.18.111.99"
+          ],
+          "dns": {}
+      }]           
+    k8s.ovn.org/routing-namespaces: "foo,bar"
+    k8s.ovn.org/bfd-enabled: ""
+    k8s.ovn.org/routing-network: "frr/internal-net"
 spec:
   # hostNetwork: true
+  # serviceAccountName: ext-gw-sa
+  # serviceAccount: ext-gw-sa
   containers:
   - name: frr
     image: quay.io/wcaban/frr
@@ -47,8 +65,13 @@ spec:
       containerPort: 9000
       protocol: TCP
     # ServiceAccount requires "privileged" SCC
+    # oc adm policy add-scc-to-user privileged -z default
     securityContext:
       privileged: true
+      # capabilities:
+      #   add:
+      #     - NET_RAW
+      #     - NET_ADMIN
     volumeMounts:
     - name: config-volume
       mountPath: /etc/frr

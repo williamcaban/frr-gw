@@ -74,6 +74,13 @@ data:
         redistribute connected metric 100
       exit-address-family
     !
+    ! subnets for each node
+    ip route 10.128.2.0/23 198.18.111.12
+    ip route 10.129.0.0/23 198.18.111.13
+    ip route 10.128.0.0/23 198.18.111.14
+    ip route 10.130.0.0/23 198.18.111.15
+    ip route 10.131.0.0/23 198.18.111.16
+    !
     # log file /var/log/frr/frr.log debugging
     log file /tmp/frr.log debugging
     #log stdout debugging
