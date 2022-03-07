@@ -12,7 +12,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 #############################################################################
 ```
 
-This repository contains an example lab configuration for using an FRR-based Pod with the OpenShift Multiple External Gateway capability.
+This repository contains an example lab configuration for using an FRR-based Pod with the OVN Kubernetes Multiple External Gateway capability.
 
 To restrict the external gateway functionality to only work on a pre-selected set of namespaces, an example security profile using Kyverno has been included.
 
