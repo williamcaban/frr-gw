@@ -72,6 +72,7 @@ data:
       !
       address-family ipv4 unicast
         redistribute connected metric 100
+        redistribute static metric 150
       exit-address-family
     !
     ! subnets for each node
